@@ -1,0 +1,22 @@
+# Python dependencies
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+.venv/
+env/
+.env
+
+# Database
+# financial_portfolio.db
+
+# Logs
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Deployment artifacts
+# Ensure static folder is included
+!static/

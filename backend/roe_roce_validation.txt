@@ -1,0 +1,148 @@
+
+=================================================================
+  HDFC Bank (HDFCBANK.NS)  |  Sector: Private Bank  |  Bank: True
+=================================================================
+  FY2023: NI=   49544.7 Cr  Equity=  291220.1 Cr  ROE=17.01%
+  FY2024: NI=   62265.7 Cr  Equity=  694732.7 Cr  ROE=8.96%
+  FY2025: NI=   67350.8 Cr  Equity=  767689.1 Cr  ROE=8.77%
+
+  >> ROE  3Y-Avg : 11.58%
+  >> ROCE 3Y-Avg : N/A [BANK]
+
+=================================================================
+  SBI (SBIN.NS)  |  Sector: PSU Bank  |  Bank: True
+=================================================================
+  FY2023: NI=   55648.2 Cr  Equity=  358931.3 Cr  ROE=15.50%
+  FY2024: NI=   67084.7 Cr  Equity=  414939.2 Cr  ROE=16.17%
+  FY2025: NI=   77561.3 Cr  Equity=  487036.8 Cr  ROE=15.93%
+
+  >> ROE  3Y-Avg : 15.87%
+  >> ROCE 3Y-Avg : N/A [BANK]
+
+=================================================================
+  Reliance Inds (RELIANCE.NS)  |  Sector: Oil & Gas  |  Bank: False
+=================================================================
+  FY2023: NI=   66702.0 Cr  Equity=  715872.0 Cr  ROE=9.32%
+          EBIT=  113004.0 Cr  CE= 1211688.0 Cr  ROCE=9.33%
+  FY2024: NI=   69621.0 Cr  Equity=  793481.0 Cr  ROE=8.77%
+          EBIT=  126112.0 Cr  CE= 1358619.0 Cr  ROCE=9.28%
+  FY2025: NI=   69648.0 Cr  Equity=  843200.0 Cr  ROE=8.26%
+          EBIT=  128138.0 Cr  CE= 1496384.0 Cr  ROCE=8.56%
+
+  >> ROE  3Y-Avg : 8.78%
+  >> ROCE 3Y-Avg : 9.06%
+
+=================================================================
+  TCS (TCS.NS)  |  Sector: IT / Services  |  Bank: False
+=================================================================
+  FY2023: NI=   42147.0 Cr  Equity=   90424.0 Cr  ROE=46.61%
+          EBIT=   57686.0 Cr  CE=  100093.0 Cr  ROCE=57.63%
+  FY2024: NI=   45908.0 Cr  Equity=   90489.0 Cr  ROE=50.73%
+          EBIT=   62775.0 Cr  CE=  100345.0 Cr  ROCE=62.56%
+  FY2025: NI=   48553.0 Cr  Equity=   94756.0 Cr  ROE=51.24%
+          EBIT=   66127.0 Cr  CE=  106628.0 Cr  ROCE=62.02%
+
+  >> ROE  3Y-Avg : 49.53%
+  >> ROCE 3Y-Avg : 60.74%
+
+=================================================================
+  Infosys (INFY.NS)  |  Sector: IT / Services  |  Bank: False
+=================================================================
+  FY2023: NI=     298.1 Cr  Equity=     917.2 Cr  ROE=32.50%
+          EBIT=     416.0 Cr  CE=    1054.3 Cr  ROCE=39.46%
+  FY2024: NI=     316.7 Cr  Equity=    1055.9 Cr  ROE=29.99%
+          EBIT=     440.2 Cr  CE=    1187.2 Cr  ROCE=37.08%
+  FY2025: NI=     315.8 Cr  Equity=    1120.5 Cr  ROE=28.18%
+          EBIT=     449.6 Cr  CE=    1240.7 Cr  ROCE=36.24%
+
+  >> ROE  3Y-Avg : 30.22%
+  >> ROCE 3Y-Avg : 37.59%
+
+=================================================================
+  Maruti Suzuki (MARUTI.NS)  |  Sector: Auto  |  Bank: False
+=================================================================
+  FY2023: NI=    8263.7 Cr  Equity=   74600.2 Cr  ROE=11.08%
+          EBIT=   10690.5 Cr  CE=   77618.7 Cr  ROCE=13.77%
+  FY2024: NI=   13488.2 Cr  Equity=   85636.0 Cr  ROE=15.75%
+          EBIT=   17618.1 Cr  CE=   89399.0 Cr  ROCE=19.71%
+  FY2025: NI=   14500.2 Cr  Equity=   96239.9 Cr  ROE=15.07%
+          EBIT=   19814.2 Cr  CE=  101401.3 Cr  ROCE=19.54%
+
+  >> ROE  3Y-Avg : 13.97%
+  >> ROCE 3Y-Avg : 17.67%
+
+=================================================================
+  Sun Pharma (SUNPHARMA.NS)  |  Sector: Pharma  |  Bank: False
+=================================================================
+  FY2023: NI=    8473.6 Cr  Equity=   55995.4 Cr  ROE=15.13%
+          EBIT=    9580.4 Cr  CE=   60836.6 Cr  ROCE=15.75%
+  FY2024: NI=    9576.4 Cr  Equity=   63666.8 Cr  ROE=15.04%
+          EBIT=   11326.4 Cr  CE=   68515.2 Cr  ROCE=16.53%
+  FY2025: NI=   10929.0 Cr  Equity=   72218.0 Cr  ROE=15.13%
+          EBIT=   13983.5 Cr  CE=   73906.4 Cr  ROCE=18.92%
+
+  >> ROE  3Y-Avg : 15.10%
+  >> ROCE 3Y-Avg : 17.07%
+
+=================================================================
+  Titan Company (TITAN.NS)  |  Sector: Consumer  |  Bank: False
+=================================================================
+  FY2023: NI=    3250.0 Cr  Equity=   11851.0 Cr  ROE=27.42%
+          EBIT=    4747.0 Cr  CE=   13759.0 Cr  ROCE=34.50%
+  FY2024: NI=    3496.0 Cr  Equity=    9393.0 Cr  ROE=37.22%
+          EBIT=    5242.0 Cr  CE=   15021.0 Cr  ROCE=34.90%
+  FY2025: NI=    3337.0 Cr  Equity=   11624.0 Cr  ROE=28.71%
+          EBIT=    5488.0 Cr  CE=   14854.0 Cr  ROCE=36.95%
+
+  >> ROE  3Y-Avg : 31.12%
+  >> ROCE 3Y-Avg : 35.45%
+
+=================================================================
+  NTPC (NTPC.NS)  |  Sector: PSU Energy  |  Bank: False
+=================================================================
+  FY2023: NI=   16912.5 Cr  Equity=  147023.2 Cr  ROE=11.50%
+          EBIT=   35216.1 Cr  CE=  359143.1 Cr  ROCE=9.81%
+  FY2024: NI=   20811.9 Cr  Equity=  160709.3 Cr  ROE=12.95%
+          EBIT=   39394.8 Cr  CE=  379141.2 Cr  ROCE=10.39%
+  FY2025: NI=   23422.5 Cr  Equity=  184071.2 Cr  ROE=12.72%
+          EBIT=   41092.1 Cr  CE=  420525.1 Cr  ROCE=9.77%
+
+  >> ROE  3Y-Avg : 12.39%
+  >> ROCE 3Y-Avg : 9.99%
+
+=================================================================
+  Asian Paints (ASIANPAINT.NS)  |  Sector: Consumer Mfg  |  Bank: False
+=================================================================
+  FY2023: NI=    4106.4 Cr  Equity=   15992.2 Cr  ROE=25.68%
+          EBIT=    5833.3 Cr  CE=   17902.1 Cr  ROCE=32.58%
+  FY2024: NI=    5460.2 Cr  Equity=   18728.3 Cr  ROE=29.15%
+          EBIT=    7552.9 Cr  CE=   21423.1 Cr  ROCE=35.26%
+  FY2025: NI=    3667.2 Cr  Equity=   19399.8 Cr  ROE=18.90%
+          EBIT=    5330.1 Cr  CE=   22230.1 Cr  ROCE=23.98%
+
+  >> ROE  3Y-Avg : 24.58%
+  >> ROCE 3Y-Avg : 30.61%
+
+
+=========================================================================================================
+  SUMMARY TABLE
+=========================================================================================================
+Company            Sector               ROE23   ROE24   ROE25   ROE3Y |   ROCE23   ROCE24   ROCE25   ROCE3Y
+---------------------------------------------------------------------------------------------------------
+HDFC Bank          Private Bank         17.0%    9.0%    8.8%   11.6% |      N/A      N/A      N/A      N/A [BANK]
+SBI                PSU Bank             15.5%   16.2%   15.9%   15.9% |      N/A      N/A      N/A      N/A [BANK]
+Reliance Inds      Oil & Gas             9.3%    8.8%    8.3%    8.8% |     9.3%     9.3%     8.6%     9.1%
+TCS                IT / Services        46.6%   50.7%   51.2%   49.5% |    57.6%    62.6%    62.0%    60.7%
+Infosys            IT / Services        32.5%   30.0%   28.2%   30.2% |    39.5%    37.1%    36.2%    37.6%
+Maruti Suzuki      Auto                 11.1%   15.8%   15.1%   14.0% |    13.8%    19.7%    19.5%    17.7%
+Sun Pharma         Pharma               15.1%   15.0%   15.1%   15.1% |    15.8%    16.5%    18.9%    17.1%
+Titan Company      Consumer             27.4%   37.2%   28.7%   31.1% |    34.5%    34.9%    37.0%    35.5%
+NTPC               PSU Energy           11.5%   12.9%   12.7%   12.4% |     9.8%    10.4%     9.8%    10.0%
+Asian Paints       Consumer Mfg         25.7%   29.1%   18.9%   24.6% |    32.6%    35.3%    24.0%    30.6%
+=========================================================================================================
+
+Note: All values computed from Yahoo Finance raw annual statements.
+ROE = Net Income / Stockholders Equity
+ROCE = EBIT / (Total Assets - Current Liabilities)
+3Y Avg: Arithmetic mean of FY2023, FY2024, FY2025
+[BANK] = Bank/NBFC: ROCE not applicable.

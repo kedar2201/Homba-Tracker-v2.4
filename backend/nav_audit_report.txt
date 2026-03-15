@@ -1,0 +1,30 @@
+
+=== USER 1 AUDIT ===
+ID    | Scheme Name                                        | Code       | ISIN            | NAV
+----------------------------------------------------------------------------------------------------
+1     | MF-quantum mutal fund                              | 107693     | None            | 129.5732
+2     | Mf-Parag Parikh Flexi Cap - Dir Plan               | 122639     | None            | 94.1941
+3     | Mf-Parag Parikh Flexi Cap - Dir Plan               | 122639     | None            | 94.1941
+4     | Mf-Parag Parikh Flexi Cap - Dir Plan               | 122639     | None            | 94.1941
+9     | ICICI PRUDENTIAL BANKING & PSU DEBT FUND - DIRECT  | 120256     | None            | 35.3169
+10    | SBI BANKING & PSU FUND - DIRECT PLAN               | 125503     | None            | 3416.7073
+16    | SBI Nifty Index Fund                               | 153253     | INF200K01S35    | 11.9661
+19    | Helios Flexi Cap Fund                              | 152136     | None            | 14.84
+23    | HDFC BALANCED ADVANTAGE FUND - DIRECT PLAN         | 118968     | None            | 577.293
+27    | HDFC BALANCED ADVANTAGE FUND - DIRECT PLAN         | 118968     | None            | 577.293
+30    | Gold bonds                                         | None       | None            | 130.4464
+
+=== USER 2 AUDIT ===
+ID    | Scheme Name                                        | Code       | ISIN            | NAV
+----------------------------------------------------------------------------------------------------
+31    | HDFC BALANCED ADVANTAGE FUND - DIRECT PLAN         | 118968     | INF179K01WA6    | 577.293
+32    | ICICI PRUDENTIAL BANKING AND PSU DEBT FUND - DIREC | 120256     | INF109K010A6    | 35.3169
+33    | SBI BANKING & PSU FUND - DIRECT PLAN               | 125503     | INF200K01V08    | 3416.7073
+34    | HDFC Balanced Advantage Fund                       | 118968     | None            | 577.293
+35    | Helios Flexi Cap Fund                              | 152136     | None            | 14.84
+36    | ICICI Prudential Balanced Advantage Fund           | 120586     | None            | 125.96
+37    | ICICI Prudential Banking and PSU Debt Fund         | 120256     | None            | 35.3169
+38    | Motilal Oswal Nifty 200 Momentum 30 Index Fund     | 152957     | None            | 152.8297
+39    | Quantum Small Cap Fund                             | 107693     | None            | 129.5732
+40    | SBI Banking & PSU Fund                             | 125503     | None            | 3416.7073
+41    | SBI Nifty Index Fund                               | 119827     | INF200K01S35    | 239.4782

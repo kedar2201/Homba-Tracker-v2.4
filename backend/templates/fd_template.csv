@@ -1,0 +1,4 @@
+Bank_Name,Depositor_Name,Depositor_Code,FD_Code,Principal,Interest_Rate,Start_Date,Maturity_Date,Compounding_Frequency,Payout_Type
+HDFC Bank,Kedar Hombalkar HUF,H,FD12345,100000,7.5,2023-01-01,2025-01-01,Quarterly,Cumulative
+SBI Bank,Manisha Hombalkar,M,FD67890,50000,6.5,2023-06-01,2024-06-01,Monthly,Monthly Payout
+BAJAJ FIN,KEDAR HOMBALKAR,K,FD9999,75000,7.8,2024-01-15,2026-01-15,Yearly,Cumulative
