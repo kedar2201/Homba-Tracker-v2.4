@@ -3,7 +3,11 @@ import react from '@vitejs/plugin-react'
 
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [react()],
+  root: './',
+  base: './',
+  plugins: [
+    react(),
+  ],
   server: {
     port: 5174,
     proxy: {
@@ -13,4 +17,17 @@ export default defineConfig({
       },
     },
   },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          'vendor-react': ['react', 'react-dom', 'react-router-dom'],
+          'vendor-utils': ['axios', 'date-fns', 'clsx', 'tailwind-merge'],
+          'vendor-viz': ['recharts', 'framer-motion'],
+          'vendor-export': ['xlsx', 'jspdf', 'jspdf-autotable', 'file-saver'],
+        }
+      }
+    },
+    chunkSizeWarningLimit: 1000,
+  }
 })

@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "analyze": "vite build --mode analyze"
   },
   "dependencies": {
     "@tanstack/react-table": "^8.21.3",
@@ -24,12 +25,13 @@
     "react-router-dom": "^6.30.3",
     "recharts": "^3.7.0",
     "tailwind-merge": "^3.4.0",
-    "xlsx": "^0.18.5"
+    "xlsx": "^0.18.5",
+    "react-error-boundary": "^5.0.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",
     "@types/file-saver": "^2.0.7",
-    "@types/node": "^24.10.1",
+    "@types/node": "^20.11.0",
     "@types/react": "^18.2.0",
     "@types/react-dom": "^18.2.0",
     "@vitejs/plugin-react": "^5.1.1",
@@ -42,6 +44,8 @@
     "tailwindcss": "^3.4.17",
     "typescript": "~5.9.3",
     "typescript-eslint": "^8.46.4",
-    "vite": "^7.2.4"
+    "vite": "^7.2.4",
+    "vite-plugin-compression2": "^2.5.0",
+    "rollup-plugin-visualizer": "^7.0.1"
   }
 }
