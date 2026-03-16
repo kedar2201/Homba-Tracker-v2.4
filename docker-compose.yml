@@ -1,0 +1,23 @@
+version: "3.9"
+
+services:
+  backend:
+    build: ./backend
+    container_name: portfolio_backend
+    ports:
+      - "8001:8001"
+    volumes:
+      - ./backend/data:/app/data
+      - ./backend/api_requests.log:/app/api_requests.log
+    environment:
+      - DATABASE_URL=sqlite:////app/data/financial_portfolio.db
+    restart: always
+
+  frontend:
+    build: ./frontend
+    container_name: portfolio_frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+    restart: always

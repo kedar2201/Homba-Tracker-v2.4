@@ -10,11 +10,14 @@ from ..auth.auth import verify_password, get_password_hash, create_access_token,
 from datetime import datetime, timedelta
 import random
 
+from ..core.config import settings
+
 logger = logging.getLogger(__name__)
 
 router = APIRouter(
     tags=["Authentication"],
 )
+
 
 @router.get("/ping")
 def ping():
@@ -53,11 +56,12 @@ def register_user(user: UserRegister, db: Session = Depends(get_db)):
         country=user.country,
         hashed_password=hashed_password,
         device_fingerprint=user.device_fingerprint,
-        is_verified=True, # AUTO-VERIFIED FOR TESTING PHASE
+        is_verified=False, # Default to false, verify via OTP
         license_status="trial",
         trial_start_at=datetime.utcnow(),
-        trial_end_at=datetime.utcnow() + timedelta(days=30)
+        trial_end_at=datetime.utcnow() + timedelta(days=settings.FREE_TRIAL_DAYS)
     )
+
     
     # 4. Generate OTP (For testing phase, using a fixed 123456)
     # TODO: Replace with real email/SMS service in production
@@ -78,13 +82,14 @@ def verify_otp(username: str, otp: str, db: Session = Depends(get_db)):
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
     
-    # Allow 123456 as a master OTP for testing phase
-    if user.otp_code != otp and otp != "123456":
+    # Allow master OTP if configured (for development/testing)
+    if user.otp_code != otp and (settings.DEFAULT_OTP is None or otp != settings.DEFAULT_OTP):
         raise HTTPException(status_code=400, detail="Invalid OTP")
     
     # Only check expiry for the real OTP code, or allow it for master OTP
-    if otp != "123456" and datetime.utcnow() > user.otp_expiry:
+    if (settings.DEFAULT_OTP is None or otp != settings.DEFAULT_OTP) and datetime.utcnow() > user.otp_expiry:
         raise HTTPException(status_code=400, detail="OTP expired")
+
     
     user.is_verified = True
     user.otp_code = None
@@ -101,20 +106,18 @@ def check_license(current_user: User = Depends(get_current_user)):
         delta = current_user.trial_end_at - now
         days_left = max(0, delta.days)
     
-    status = "trial"
-    days_left = 999
-    
-    message = f"Testing mode: You are on a free trial. {days_left} days remaining."
-    
-    # Bypass original logic
-    """
     status = current_user.license_status
     
     # Auto-expire logic
     if status == "trial" and days_left <= 0:
         status = "expired"
-    ...
-    """
+    
+    message = f"You are on a {status} license. {days_left} days remaining."
+    if status == "expired":
+        message = "Your trial has expired. Please contact administrator."
+    elif status == "active":
+        message = "Your account is fully active."
+
 
     return {
         "status": status,
@@ -625,8 +628,9 @@ async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(
 
     access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
     access_token = create_access_token(
-        data={"sub": user.username}, expires_delta=access_token_expires
+        subject=user.username, expires_delta=access_token_expires
     )
+
     return {"access_token": access_token, "token_type": "bearer"}
 
 @router.post("/change-password")

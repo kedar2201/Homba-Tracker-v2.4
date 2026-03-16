@@ -1,26 +1,28 @@
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
-import os
+from .core.config import settings
 
-# Allow overriding via environment variable, but default to a local file for dev if Postgres not set
-# Use an absolute path based on the script location to ensure we always hit the same file
-base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-db_path = os.path.join(base_dir, "financial_portfolio.db")
-SQLALCHEMY_DATABASE_URL = os.getenv("DATABASE_URL", f"sqlite:///{db_path}")
+SQLALCHEMY_DATABASE_URL = settings.DATABASE_URL
 
 # If using Postgres, use psycopg2
 if SQLALCHEMY_DATABASE_URL.startswith("postgres"):
-    engine = create_engine(SQLALCHEMY_DATABASE_URL)
+    # Fix for newer sqlalchemy/postgres compatibility
+    if SQLALCHEMY_DATABASE_URL.startswith("postgres://"):
+        SQLALCHEMY_DATABASE_URL = SQLALCHEMY_DATABASE_URL.replace("postgres://", "postgresql://", 1)
+    engine = create_engine(SQLALCHEMY_DATABASE_URL, pool_pre_ping=True)
 else:
     # SQLite specific args
     engine = create_engine(
-        SQLALCHEMY_DATABASE_URL, connect_args={"check_same_thread": False}
+        SQLALCHEMY_DATABASE_URL, 
+        connect_args={"check_same_thread": False},
+        pool_pre_ping=True
     )
 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 Base = declarative_base()
+
 
 def get_db():
     db = SessionLocal()
