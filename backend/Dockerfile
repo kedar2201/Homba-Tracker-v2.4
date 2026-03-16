@@ -1,43 +1,51 @@
-# Multi-stage build for smaller production image
-FROM python:3.11-slim as builder
+# Use a specialized uv image for dependency management
+FROM astralsh/uv:python3.13-bookworm-slim AS builder
+
+# Enable bytecode compilation
+ENV UV_COMPILE_BYTECODE=1
+# Copy from the cache instead of linking since it's a multi-stage build
+ENV UV_LINK_MODE=copy
 
 WORKDIR /app
 
-# Install build dependencies
-RUN apt-get update && apt-get install -y \
-    gcc \
-    libpq-dev \
-    && rm -rf /var/lib/apt/lists/*
+# Install dependencies first for better caching
+RUN --mount=type=cache,target=/root/.cache/uv \
+    --mount=type=bind,source=uv.lock,target=uv.lock \
+    --mount=type=bind,source=pyproject.toml,target=pyproject.toml \
+    uv sync --frozen --no-install-project --no-dev
 
-# Install python dependencies
-COPY requirements.txt .
-RUN pip install --user --no-cache-dir -r requirements.txt
+# Copy the rest of the application
+COPY . .
 
-# Final stage
-FROM python:3.11-slim
+# Install the project
+RUN --mount=type=cache,target=/root/.cache/uv \
+    uv sync --frozen --no-dev
+
+# Final stage: minimal runtime image
+FROM python:3.13-slim-bookworm
 
 WORKDIR /app
 
 # Add non-root user for security
 RUN groupadd -r app && useradd -r -g app app
 
-# Copy only necessary files from builder
-COPY --from=builder /root/.local /home/app/.local
-COPY . .
+# Copy the virtual environment from the builder
+COPY --from=builder --chown=app:app /app/.venv /app/.venv
+# Copy application code from the builder
+COPY --from=builder --chown=app:app /app /app
 
-# Ensure app user has access to necessary directories
+# Ensure data and logs directories exist and have correct permissions
 RUN mkdir -p /app/data /app/logs && \
-    chown -R app:app /app
+    chown -R app:app /app/data /app/logs
 
-# Set path for user-installed packages
-ENV PATH=/home/app/.local/bin:$PATH
-ENV PYTHONUNBUFFERED=1
+# Set environment variables
+ENV PATH="/app/.venv/bin:$PATH" \
+    PYTHONUNBUFFERED=1 \
+    PYTHONPATH=/app \
+    PORT=8001 \
+    ENVIRONMENT=production
 
 USER app
-
-# Default environment variables
-ENV ENVIRONMENT=production
-ENV PORT=8001
 
 EXPOSE 8001
 

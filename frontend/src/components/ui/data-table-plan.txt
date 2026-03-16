@@ -1,0 +1,21 @@
+import {
+  ColumnDef,
+  flexRender,
+  getCoreRowModel,
+  useReactTable,
+  getPaginationRowModel,
+} from "@tanstack/react-table"
+
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "./table" // Wait, I don't have this component. I will use native HTML table with classes if needed or define Table component here.
+
+// Since I am inside `ui/data-table.tsx`, I usually expect `ui/table.tsx` from shadcn.
+// I'll inline the table styles here for simplicity or create `ui/table.tsx`.
+
+// Let's create `ui/table.tsx` first.

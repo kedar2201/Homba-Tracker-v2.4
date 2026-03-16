@@ -11,6 +11,10 @@ class Settings(BaseSettings):
     ALGORITHM: str = "HS256"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60 * 24 * 7  # 7 days
     ALLOWED_HOSTS: List[str] = ["*"]  # Set to specific domains in production
+    
+    # Logging
+    LOG_DIR: str = os.getenv("LOG_DIR", "logs")
+    LOG_LEVEL: str = os.getenv("LOG_LEVEL", "INFO")
 
     
     # Database

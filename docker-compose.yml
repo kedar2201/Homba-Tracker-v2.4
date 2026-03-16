@@ -2,22 +2,41 @@ version: "3.9"
 
 services:
   backend:
-    build: ./backend
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
     container_name: portfolio_backend
     ports:
       - "8001:8001"
     volumes:
       - ./backend/data:/app/data
-      - ./backend/api_requests.log:/app/api_requests.log
+      - ./backend/logs:/app/logs
     environment:
       - DATABASE_URL=sqlite:////app/data/financial_portfolio.db
+      - ENVIRONMENT=production
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8001/health')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
     restart: always
+    networks:
+      - portfolio_network
 
   frontend:
-    build: ./frontend
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
     container_name: portfolio_frontend
     ports:
-      - "3000:80"
+      - "80:80"
     depends_on:
-      - backend
+      backend:
+        condition: service_healthy
     restart: always
+    networks:
+      - portfolio_network
+
+networks:
+  portfolio_network:
+    driver: bridge
