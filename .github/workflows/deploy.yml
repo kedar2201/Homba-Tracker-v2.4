@@ -1,0 +1,120 @@
+name: Deploy to Production
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-production
+  cancel-in-progress: false  # never cancel an in-progress deploy
+
+jobs:
+  build-and-deploy:
+    name: Build, Package & Deploy
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      # ────────────────────────────────────────────
+      # Build Frontend
+      # ────────────────────────────────────────────
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Install frontend dependencies
+        working-directory: frontend
+        run: bun install
+
+      - name: Build frontend
+        working-directory: frontend
+        run: bun run build
+
+      # ────────────────────────────────────────────
+      # Package Artifacts as ZIP
+      # ────────────────────────────────────────────
+      - name: Package backend (zip)
+        run: |
+          cd backend
+          zip -r ../backend_update.zip . \
+            -x "*.db" \
+            -x "*.sqlite" \
+            -x "*.sqlite3" \
+            -x "__pycache__/*" \
+            -x ".venv/*" \
+            -x "*.log" \
+            -x "logs/*" \
+            -x "data/*.db" \
+            -x "data/*.sqlite" \
+            -x "temp_backups/*" \
+            -x "archive/*" \
+            -x ".env" \
+            -x ".env.*" \
+            -x ".dockerignore" \
+            -x "Dockerfile" \
+            -x ".gitignore" \
+            -x ".python-version"
+
+      - name: Package frontend dist (zip)
+        run: |
+          cd frontend/dist
+          zip -r ../../frontend_update.zip .
+
+      # ────────────────────────────────────────────
+      # Upload to Server via SCP
+      # ────────────────────────────────────────────
+      - name: Upload artifacts to server
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.DEPLOY_HOST }}
+          username: ${{ secrets.DEPLOY_USER }}
+          password: ${{ secrets.DEPLOY_PASSWORD }}
+          source: "backend_update.zip,frontend_update.zip"
+          target: ${{ secrets.DEPLOY_PATH }}
+          strip_components: 0
+
+      # ────────────────────────────────────────────
+      # Deploy on Remote Server (Windows/PowerShell)
+      # ────────────────────────────────────────────
+      - name: Execute remote deployment
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.DEPLOY_HOST }}
+          username: ${{ secrets.DEPLOY_USER }}
+          password: ${{ secrets.DEPLOY_PASSWORD }}
+          script: |
+            cd /d C:\apps\portfolio
+
+            echo === Creating Backup ===
+            if exist backend_old rmdir /s /q backend_old
+            if exist backend xcopy /e /i /q backend backend_old
+
+            echo === Stopping portfolio-backend ===
+            pm2 stop portfolio-backend
+
+            echo === Extracting Backend ===
+            powershell -Command "if (Test-Path 'backend') { Remove-Item 'backend' -Recurse -Force }; New-Item -ItemType Directory -Path 'backend' -Force; Expand-Archive -Path 'backend_update.zip' -DestinationPath 'backend' -Force"
+
+            echo === Extracting Frontend ===
+            powershell -Command "Expand-Archive -Path 'frontend_update.zip' -DestinationPath 'frontend' -Force"
+
+            echo === Restoring Database ===
+            powershell -Command "if (Test-Path 'backend_old\data\financial_portfolio.db') { New-Item -ItemType Directory -Path 'backend\data' -Force; Copy-Item 'backend_old\data\financial_portfolio.db' 'backend\data\financial_portfolio.db' -Force; Write-Host 'Database restored successfully' } else { Write-Host 'No database to restore' }"
+
+            echo === Installing Dependencies ===
+            cd /d C:\apps\portfolio\backend
+            pip install -r requirements.txt
+
+            echo === Starting portfolio-backend ===
+            pm2 start portfolio-backend
+
+            echo === Health Check ===
+            powershell -Command "Start-Sleep -Seconds 5; try { $r = Invoke-WebRequest -Uri 'http://localhost:8001/health' -UseBasicParsing -TimeoutSec 10; Write-Host ('Health: ' + $r.Content) } catch { Write-Host ('WARNING: Health check failed - ' + $_.Exception.Message) }"
+
+            echo === Cleanup ===
+            cd /d C:\apps\portfolio
+            del /q backend_update.zip frontend_update.zip
+
+            echo === Deployment Complete ===
