@@ -29,12 +29,14 @@ const PageLoader = () => (
   </div>
 );
 
+// Protected Route component
+const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
+  const token = localStorage.getItem("token");
+  if (!token) return <Navigate to="/login" />;
+  return <Layout>{children}</Layout>;
+};
+
 function App() {
-  const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
-    const token = localStorage.getItem("token");
-    if (!token) return <Navigate to="/login" />;
-    return <Layout>{children}</Layout>;
-  };
 
   return (
     <ErrorBoundary>
