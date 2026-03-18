@@ -4,7 +4,7 @@ Rating Data State Service
 Evaluates a scrip's data readiness before rating computation.
 
 State machine:
-  NEW → FETCHING → DERIVING → READY → RATED
+  NEW -> FETCHING -> DERIVING -> READY -> RATED
                              └─ INVALID_CLASSIFICATION (unknown sector)
 
 Usage:
@@ -189,7 +189,7 @@ def check_readiness(scrip_code: str, db: Session) -> DataReadinessResult:
     else:
         result.missing_optional.append("ma50")
         result.trend_confidence = "LOW"
-        result.fallbacks_applied.append("ma50 missing → trend_confidence=LOW, neutral trend score applied")
+        result.fallbacks_applied.append("ma50 missing -> trend_confidence=LOW, neutral trend score applied")
 
     # MA200 — optional (same — neutral score)
     if pc.ma200 and pc.ma200 > 0:
@@ -199,7 +199,7 @@ def check_readiness(scrip_code: str, db: Session) -> DataReadinessResult:
         result.missing_optional.append("ma200")
         result.trend_confidence = "LOW"
         if "ma200 missing" not in " ".join(result.fallbacks_applied):
-            result.fallbacks_applied.append("ma200 missing → trend_confidence=LOW, neutral trend score applied")
+            result.fallbacks_applied.append("ma200 missing -> trend_confidence=LOW, neutral trend score applied")
 
     # EPS — mandatory
     if pc.eps and pc.eps != 0:
@@ -270,7 +270,7 @@ def _resolve_roe(
     result.roe_is_fallback = True
     result.missing_optional.append("roe_3y_avg")
     result.fallbacks_applied.append(
-        f"roe_3y_avg missing → using sector median {SECTOR_MEDIAN_ROE}%"
+        f"roe_3y_avg missing -> using sector median {SECTOR_MEDIAN_ROE}%"
     )
     # Give partial credit
     result.pts_have += 0.5
@@ -291,7 +291,7 @@ def _resolve_roce(
     result.roce_is_fallback = True
     result.missing_optional.append("roce_3y_avg")
     result.fallbacks_applied.append(
-        f"roce_3y_avg missing → using sector median {SECTOR_MEDIAN_ROCE}%"
+        f"roce_3y_avg missing -> using sector median {SECTOR_MEDIAN_ROCE}%"
     )
     result.pts_have += 0.5
 
@@ -324,7 +324,7 @@ def _resolve_growth_rate(
             result.pts_have += 0.5
         result.earnings_growth = g
         result.fallbacks_applied.append(
-            f"earnings_growth missing → using user eps_growth {pc.eps_growth}%"
+            f"earnings_growth missing -> using user eps_growth {pc.eps_growth}%"
         )
         return g
 
@@ -332,6 +332,6 @@ def _resolve_growth_rate(
     result.earnings_growth = 0.10
     result.missing_optional.append("earnings_growth")
     result.fallbacks_applied.append(
-        "earnings_growth missing → using sector default 10%"
+        "earnings_growth missing -> using sector default 10%"
     )
     return 0.10

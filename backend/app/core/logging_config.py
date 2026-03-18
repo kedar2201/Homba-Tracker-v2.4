@@ -8,13 +8,18 @@ def setup_logging():
     if not os.path.exists(log_dir):
         os.makedirs(log_dir)
 
+    # Avoid crashing background threads if stdout is closed during shutdown.
+    # In production, logging exceptions should never take down the process.
+    logging.raiseExceptions = settings.ENVIRONMENT != "production"
+
+    handlers = [logging.FileHandler(os.path.join(log_dir, "app.log"), encoding="utf-8")]
+    if getattr(sys.stdout, "closed", False) is False:
+        handlers.insert(0, logging.StreamHandler(sys.stdout))
+
     logging.basicConfig(
         level=getattr(logging, settings.LOG_LEVEL),
         format="%(asctime)s [%(levelname)s] %(name)s: %(message)s",
-        handlers=[
-            logging.StreamHandler(sys.stdout),
-            logging.FileHandler(os.path.join(log_dir, "app.log"))
-        ]
+        handlers=handlers,
     )
     
     # Set levels for noisy libraries

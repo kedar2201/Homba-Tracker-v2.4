@@ -6,7 +6,8 @@ from typing import Optional
 from ..database import get_db
 from ..models.user import User
 from ..schemas.user import UserCreate, UserRegister, Token, User as UserSchema, UserPasswordChange, UserUpdate, UserForgotPassword, NotificationSchema, AlertSettingSchema, TracklistSchema, TracklistCreate, RadarScoringSchema, LicenseStatus, UpdateLicenseRequest
-from ..auth.auth import verify_password, get_password_hash, create_access_token, ACCESS_TOKEN_EXPIRE_MINUTES, get_current_user
+from ..core.security import verify_password, get_password_hash, create_access_token
+from ..auth.auth import get_current_user
 from datetime import datetime, timedelta
 import random
 
@@ -626,7 +627,7 @@ async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(
             detail="Your account has been blocked by the administrator."
         )
 
-    access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+    access_token_expires = timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
     access_token = create_access_token(
         subject=user.username, expires_delta=access_token_expires
     )

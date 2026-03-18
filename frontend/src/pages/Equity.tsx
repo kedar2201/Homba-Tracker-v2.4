@@ -210,7 +210,7 @@ export default function EquityPage() {
         setLoading(true);
         // 1. Initial Load: Get stored data FAST with status filter
         api.get(`/equity/?status=${status}`)
-            .then(res => {
+            .then((res: any) => {
                 // Filter out SGBs
                 const filteredData = res.data.filter((e: any) => !e.symbol.startsWith("SGB"));
                 setData(filteredData);
@@ -221,16 +221,16 @@ export default function EquityPage() {
                 if (status === "ACTIVE") {
                     api.get("/equity/sync-prices")
                         .then(() => {
-                            api.get(`/equity/?status=${status}`).then(updatedRes => {
+                            api.get(`/equity/?status=${status}`).then((updatedRes: any) => {
                                 const refiltered = updatedRes.data.filter((e: any) => !e.symbol.startsWith("SGB"));
                                 setData(refiltered);
                                 setLastUpdated(new Date());
                             });
                         })
-                        .catch(e => console.error("Background sync error:", e));
+                        .catch((e: any) => console.error("Background sync error:", e));
                 }
             })
-            .catch(err => {
+            .catch((err: any) => {
                 console.error(err);
                 setError("Failed to load portfolio.");
                 setLoading(false);
@@ -244,14 +244,14 @@ export default function EquityPage() {
     // Load all profitability summaries once
     useEffect(() => {
         api.get("/profitability/summary")
-            .then(res => setProfitabilityMap(res.data))
+            .then((res: any) => setProfitabilityMap(res.data))
             .catch(() => { }); // Silently ignore if not yet seeded
     }, []);
 
     // Load all ratings once
     useEffect(() => {
         getAllRatings()
-            .then(data => setRatingMap(data))
+            .then((data: any) => setRatingMap(data))
             .catch(() => { }); // Silently ignore if none computed yet
     }, []);
 

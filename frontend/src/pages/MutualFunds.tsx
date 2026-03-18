@@ -83,7 +83,7 @@ export default function MutualFundsPage() {
     const refreshData = () => {
         setLoading(true);
         api.get(`/mutual-funds/?status=${status}`)
-            .then(res => {
+            .then((res: any) => {
                 // Filter out SGBs / Bonds
                 const filteredData = res.data.filter((m: any) =>
                     !(m.interest_rate > 0 || m.scheme_name.toLowerCase().includes("sgb"))
@@ -91,7 +91,7 @@ export default function MutualFundsPage() {
                 setData(filteredData);
                 setLastUpdated(new Date());
             })
-            .catch(err => console.error(err))
+            .catch((err: any) => console.error(err))
             .finally(() => setLoading(false));
     };
 

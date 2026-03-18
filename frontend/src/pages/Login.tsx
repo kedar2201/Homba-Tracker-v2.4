@@ -31,7 +31,7 @@ export default function Login() {
         } catch (err: any) {
             console.error("Login Error:", err);
             if (!err.response) {
-                setError("Network error: Cannot reach the backend server (Port 8000).");
+                setError("Network error: Cannot reach the backend server (Port 8001).");
             } else if (err.response.status === 401) {
                 setError("Invalid username or password.");
             } else {

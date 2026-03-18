@@ -60,8 +60,8 @@ export default function OtherAssetsPage() {
 
     const fetchAssets = () => {
         api.get("/other-assets/")
-            .then(res => setData(res.data))
-            .catch(err => console.error(err))
+            .then((res: any) => setData(res.data))
+            .catch((err: any) => console.error(err))
             .finally(() => setLoading(false));
     };
 
@@ -277,7 +277,7 @@ export default function OtherAssetsPage() {
                                     <select
                                         className="w-full p-2.5 bg-slate-50 border rounded-lg font-medium text-slate-900"
                                         value={modalAsset.category}
-                                        onChange={e => setModalAsset({ ...modalAsset, category: e.target.value })}
+                                        onChange={(e: any) => setModalAsset({ ...modalAsset, category: e.target.value })}
                                     >
                                         {availableCategories.map(c => (
                                             <option key={c} value={c}>{c.replace("_", " ")}</option>
@@ -291,7 +291,7 @@ export default function OtherAssetsPage() {
                                         required
                                         className="w-full p-2.5 bg-slate-50 border rounded-lg font-bold text-slate-900"
                                         value={modalAsset.valuation}
-                                        onChange={e => setModalAsset({ ...modalAsset, valuation: parseFloat(e.target.value) })}
+                                        onChange={(e: any) => setModalAsset({ ...modalAsset, valuation: parseFloat(e.target.value) })}
                                     />
                                 </div>
                             </div>
@@ -303,7 +303,7 @@ export default function OtherAssetsPage() {
                                     placeholder="e.g. PPF Account, Family Flat, Gold coins"
                                     className="w-full p-2.5 bg-slate-50 border rounded-lg font-medium text-slate-900"
                                     value={modalAsset.name}
-                                    onChange={e => setModalAsset({ ...modalAsset, name: e.target.value })}
+                                    onChange={(e: any) => setModalAsset({ ...modalAsset, name: e.target.value })}
                                 />
                             </div>
 
@@ -313,7 +313,7 @@ export default function OtherAssetsPage() {
                                     placeholder="e.g. SBI, LIC, Post Office"
                                     className="w-full p-2.5 bg-slate-50 border rounded-lg font-medium text-slate-900"
                                     value={modalAsset.institution || ""}
-                                    onChange={e => setModalAsset({ ...modalAsset, institution: e.target.value })}
+                                    onChange={(e: any) => setModalAsset({ ...modalAsset, institution: e.target.value })}
                                 />
                             </div>
 
@@ -323,7 +323,7 @@ export default function OtherAssetsPage() {
                                     placeholder="Any additional details..."
                                     className="w-full p-2.5 bg-slate-50 border rounded-lg font-medium text-slate-500 text-xs h-20"
                                     value={modalAsset.description || ""}
-                                    onChange={e => setModalAsset({ ...modalAsset, description: e.target.value })}
+                                    onChange={(e: any) => setModalAsset({ ...modalAsset, description: e.target.value })}
                                 />
                             </div>
 

@@ -4,14 +4,14 @@ Stock Rating Engine — Data-First Rebuild
 Core principle: NEVER compute ratings on incomplete data.
 
 Pipeline:
-  1. check_readiness() → DataReadinessResult
-  2. If state != READY  → update data_state, return early
+  1. check_readiness() -> DataReadinessResult
+  2. If state != READY  -> update data_state, return early
   3. Compute bucket scores using resolved (possibly fallback) values
   4. Compute confidence score
   5. Store breakdown + confidence + audit trail
 
 Scoring unchanged when data is present.
-Missing data → neutral score (not minimum-penalty).
+Missing data -> neutral score (not minimum-penalty).
 """
 
 from __future__ import annotations
@@ -43,7 +43,7 @@ def _score_trend(rd: DataReadinessResult) -> float:
     """
     Price vs 50/200 DMA.
 
-    If MA data is missing (trend_confidence=LOW) → neutral score (12/20).
+    If MA data is missing (trend_confidence=LOW) -> neutral score (12/20).
     This avoids penalising a stock just because the MA hasn't been cached yet.
     """
     p    = rd.price
@@ -89,22 +89,22 @@ def _score_valuation(
     Both are derived from the same PE data.
 
     Part A — Forward PE compression (max 15):
-      pe_2y < pe_1y < pe_current  → 15 pts
-      pe_1y < pe_current           → 10 pts
-      flat                         → 6  pts
-      expanding                    → 2  pts
+      pe_2y < pe_1y < pe_current  -> 15 pts
+      pe_1y < pe_current           -> 10 pts
+      flat                         -> 6  pts
+      expanding                    -> 2  pts
 
     Part B — Absolute trailing PE (max 10):
-      < 15   → 10 pts
-      15–25  →  7 pts
-      25–40  →  4 pts
-      > 40   →  0 pts
+      < 15   -> 10 pts
+      15–25  ->  7 pts
+      25–40  ->  4 pts
+      > 40   ->  0 pts
 
     Growth score (max 20) — also PE-based:
-      Strong 2Y compression → 20
-      1Y compression        → 14
-      Flat                  →  8
-      Expanding             →  2
+      Strong 2Y compression -> 20
+      1Y compression        -> 14
+      Flat                  ->  8
+      Expanding             ->  2
     """
     pe   = rd.pe
     eps  = rd.eps
@@ -189,10 +189,10 @@ def _score_growth_bank(rd: DataReadinessResult) -> float:
     """
     Bank Growth Scoring (max 20) based on Forward PE compression.
     Rules:
-    - pe_2y < pe_1y         → 20 pts (Future growth)
-    - pe_1y < current_pe    → 15 pts (Immediate growth)
-    - pe_missing            → 10 pts (Neutral)
-    - pe_increasing         → 5  pts (Warning)
+    - pe_2y < pe_1y         -> 20 pts (Future growth)
+    - pe_1y < current_pe    -> 15 pts (Immediate growth)
+    - pe_missing            -> 10 pts (Neutral)
+    - pe_increasing         -> 5  pts (Warning)
     """
     pe = rd.pe
     price = rd.price
@@ -200,7 +200,7 @@ def _score_growth_bank(rd: DataReadinessResult) -> float:
     g = rd.earnings_growth or 0.10
 
     if not pe or pe <= 0 or not price or price <= 0:
-        return 10.0  # Missing current data → neutral
+        return 10.0  # Missing current data -> neutral
 
     # Derive forward PEs
     pe_1y = price / feps if feps and feps > 0 else None
@@ -225,13 +225,13 @@ def _score_growth_bank(rd: DataReadinessResult) -> float:
 def _score_profitability_non_bank(rd: DataReadinessResult) -> float:
     """
     Non-financial scoring (max 35):
-      ROE 3Y   (max 10): >18% → 10 | ≥14% → 7  | <14% → 4
-      ROCE 3Y  (max 9):  >16% → 9  | ≥12% → 6  | <12% → 3
-      ROE curr (max 8):  >20% → 8  | ≥15% → 6  | <15% → 3  (proxy = 3Y avg)
-      ROCE curr(max 8):  >18% → 8  | ≥14% → 6  | <14% → 3  (proxy = 3Y avg)
+      ROE 3Y   (max 10): >18% -> 10 | ≥14% -> 7  | <14% -> 4
+      ROCE 3Y  (max 9):  >16% -> 9  | ≥12% -> 6  | <12% -> 3
+      ROE curr (max 8):  >20% -> 8  | ≥15% -> 6  | <15% -> 3  (proxy = 3Y avg)
+      ROCE curr(max 8):  >18% -> 8  | ≥14% -> 6  | <14% -> 3  (proxy = 3Y avg)
 
-    If fallback was applied → 0.5 weight on that sub-score.
-    If completely neutral needed → NEUTRAL_PROFITABILITY_SCORE.
+    If fallback was applied -> 0.5 weight on that sub-score.
+    If completely neutral needed -> NEUTRAL_PROFITABILITY_SCORE.
     """
     roe_3y  = rd.roe_3y
     roce_3y = rd.roce_3y

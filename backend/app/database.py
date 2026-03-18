@@ -12,12 +12,13 @@ if SQLALCHEMY_DATABASE_URL.startswith("postgres"):
         SQLALCHEMY_DATABASE_URL = SQLALCHEMY_DATABASE_URL.replace("postgres://", "postgresql://", 1)
     engine = create_engine(SQLALCHEMY_DATABASE_URL, pool_pre_ping=True)
 else:
-    # SQLite specific args
+    print(f"Creating SQLite engine with URL: {SQLALCHEMY_DATABASE_URL}")
     engine = create_engine(
         SQLALCHEMY_DATABASE_URL, 
         connect_args={"check_same_thread": False},
         pool_pre_ping=True
     )
+    print("Engine created successfully")
 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 

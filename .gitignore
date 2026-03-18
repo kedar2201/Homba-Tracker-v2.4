@@ -88,3 +88,4 @@ frontend/frontend*.log
 *.swo
 *.sublime-project
 *.sublime-workspace
+!frontend/src/lib/

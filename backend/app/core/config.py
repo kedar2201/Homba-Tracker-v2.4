@@ -25,15 +25,25 @@ class Settings(BaseSettings):
     
     # Environment
     ENVIRONMENT: str = os.getenv("ENVIRONMENT", "development") # development, production, test
+    DEBUG: bool = False
+
+    # Scheduler / background jobs
+    # In development, background schedulers can be noisy/heavy; keep them opt-in.
+    ENABLE_SCHEDULER: bool = os.getenv("ENABLE_SCHEDULER", "").lower() in ("1", "true", "yes", "y")
+    RUN_STARTUP_RATING_RECOMPUTE: bool = os.getenv("RUN_STARTUP_RATING_RECOMPUTE", "").lower() in ("1", "true", "yes", "y")
     
     # Feature Flags / Trial
     FREE_TRIAL_DAYS: int = 30
     DEFAULT_OTP: Optional[str] = "123456" # Set to None in production to disable master OTP
     
     # App Specific
-    PORT: int = 8000
+    PORT: int = 8001
     
-    model_config = SettingsConfigDict(case_sensitive=True, env_file=".env")
+    model_config = SettingsConfigDict(
+        case_sensitive=True, 
+        env_file=".env",
+        extra="ignore"
+    )
 
 
 settings = Settings()

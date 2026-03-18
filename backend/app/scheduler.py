@@ -42,6 +42,13 @@ def wrapper_compute_all_ratings():
         db.close()
 
 def start_scheduler():
+    # Keep scheduler opt-in unless explicitly enabled.
+    # This avoids heavy startup jobs (like rating recompute) in dev.
+    from .core.config import settings
+    if not settings.ENABLE_SCHEDULER:
+        logger.info("Background scheduler disabled (set ENABLE_SCHEDULER=true to enable).")
+        return
+
     if not scheduler.running:
         # Schedule NAV snapshot every 2 hours on weekdays (Mon-Fri)
         trigger_nav = CronTrigger(
@@ -118,16 +125,25 @@ def start_scheduler():
         )
 
         # Run Rating Computation once at startup (with short delay via scheduler)
-        scheduler.add_job(
-            wrapper_compute_all_ratings,
-            id='rating_compute_startup',
-            name='Stock Rating Re-computation on Startup'
-        )
+        from datetime import datetime, timedelta
+        from apscheduler.triggers.date import DateTrigger
+        from .core.config import settings
+        if settings.RUN_STARTUP_RATING_RECOMPUTE:
+            scheduler.add_job(
+                wrapper_compute_all_ratings,
+                trigger=DateTrigger(run_date=datetime.utcnow() + timedelta(seconds=10)),
+                id='rating_compute_startup',
+                name='Stock Rating Re-computation on Startup',
+                replace_existing=True,
+                max_instances=1,
+                coalesce=True,
+            )
         
         scheduler.start()
         logger.info("Background scheduler started (Equity Sync + NAV Snapshots + Ratings).")
 
 def shutdown_scheduler():
     if scheduler.running:
-        scheduler.shutdown()
+        # Don't wait on long-running jobs during shutdown.
+        scheduler.shutdown(wait=False)
         logger.info("Background scheduler shut down.")

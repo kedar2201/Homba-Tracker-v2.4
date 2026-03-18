@@ -274,7 +274,7 @@ export default function ReportsPage() {
         }).finally(() => setLoading(false));
 
         // Load ratings silently
-        getAllRatings().then(data => setRatingMap(data)).catch(() => { });
+        getAllRatings().then((data: any) => setRatingMap(data)).catch(() => { });
     }, []);
 
     const simulatedProjections = useMemo(() => {
