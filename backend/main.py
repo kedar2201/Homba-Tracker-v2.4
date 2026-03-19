@@ -119,6 +119,29 @@ app.include_router(profitability.router, prefix=f"{api_v1_prefix}/profitability"
 app.include_router(rating.router, prefix=f"{api_v1_prefix}/rating")
 app.include_router(radar.router, prefix=f"{api_v1_prefix}/radar")
 
+@app.get("/health", tags=["Health"])
+async def health_check():
+    """Verify system health and database connectivity."""
+    db_status = "unhealthy"
+    try:
+        from sqlalchemy import text
+        with engine.connect() as connection:
+            connection.execute(text("SELECT 1"))
+        db_status = "healthy"
+    except Exception as e:
+        logger.error(f"Database health check failed: {e}")
+        return JSONResponse(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            content={"status": "unhealthy", "database": "disconnected"}
+        )
+
+    return {
+        "status": "healthy",
+        "database": db_status,
+        "environment": settings.ENVIRONMENT,
+        "version": "1.0.0"
+    }
+
 # Serve Static Files / SPA
 static_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "static")
 if os.path.exists(static_path):
@@ -148,29 +171,6 @@ else:
     @app.get("/")
     def read_root():
         return {"message": f"{settings.PROJECT_NAME} API Ready"}
-
-@app.get("/health", tags=["Health"])
-async def health_check():
-    """Verify system health and database connectivity."""
-    db_status = "unhealthy"
-    try:
-        from sqlalchemy import text
-        with engine.connect() as connection:
-            connection.execute(text("SELECT 1"))
-        db_status = "healthy"
-    except Exception as e:
-        logger.error(f"Database health check failed: {e}")
-        return JSONResponse(
-            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
-            content={"status": "unhealthy", "database": "disconnected"}
-        )
-
-    return {
-        "status": "healthy",
-        "database": db_status,
-        "environment": settings.ENVIRONMENT,
-        "version": "1.0.0"
-    }
 
 if __name__ == "__main__":
     import uvicorn
