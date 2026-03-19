@@ -89,3 +89,14 @@ frontend/frontend*.log
 *.sublime-project
 *.sublime-workspace
 !frontend/src/lib/
+# temp kits / scratch
+tmp_kit/
+tmp_*/
+portfolio_test/
+
+
+# temp / scratch
+tmp_kit/
+tmp_*/
+portfolio_test/
+

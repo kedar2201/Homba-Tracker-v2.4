@@ -1,4 +1,0 @@
-Bank_Name,FD_Code,Principal,Interest_Rate,Start_Date,Maturity_Date,Compounding_Frequency,Payout_Type
-SBI,FD001,100000,6.5,2022-04-01,2025-04-01,Quarterly,Cumulative
-HDFC,FD002,200000,7.0,2023-01-15,2026-01-15,Quarterly,Cumulative
-ICICI,FD003,150000,6.8,2021-10-01,2024-10-01,Quarterly,Monthly Payout
