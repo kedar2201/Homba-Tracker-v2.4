@@ -33,8 +33,8 @@ Compress-Archive -Path "frontend\dist\*" -DestinationPath $FrontendZip -Force
 Write-Host "--- 🚚 Uploading to Server ---" -ForegroundColor Cyan
 Write-Host "Target: $RemoteUser@$RemoteIP"
 
-& $SCP $BackendZip "$RemoteUser@$RemoteIP:$RemotePath\backend_update.zip"
-& $SCP $FrontendZip "$RemoteUser@$RemoteIP:$RemotePath\frontend_update.zip"
+& $SCP -P 8181 $BackendZip "$RemoteUser`@${RemoteIP}:$RemotePath\backend_update.zip"
+& $SCP -P 8181 $FrontendZip "$RemoteUser`@${RemoteIP}:$RemotePath\frontend_update.zip"
 
 Write-Host "--- 🚀 Executing Remote Deploy ---" -ForegroundColor Cyan
 
@@ -46,7 +46,8 @@ if (Test-Path 'backend_old') { Remove-Item 'backend_old' -Recurse -Force }
 Move-Item 'backend' 'backend_old' -Force
 New-Item -ItemType Directory -Path 'backend' -Force
 
-Write-Host '--- 🛑 Stopping/Deleting Service: $PM2Name ---'
+Write-Host '--- 🛑 Stopping Service: $PM2Name ---'
+Stop-Process -Name python -Force -ErrorAction SilentlyContinue 2>$null
 pm2 delete $PM2Name 2>$null
 
 Write-Host '--- 📂 Extracting Packages ---'
@@ -63,12 +64,13 @@ cd backend
 python -m pip install -r requirements.txt
 
 Write-Host '--- 🚀 Starting Service with Uvicorn via Script: $PM2Name ---'
-pm2 start start_server.py --name $PM2Name --interpreter python
+pm2 start main.py --name $PM2Name --interpreter python
 
 Write-Host '--- ✅ DEPLOYMENT FINISHED ---'
 "@
 
-# We run these via SSH
-& $SSH "$RemoteUser@$RemoteIP" "powershell -Command `$RemoteCommands`"
-
+# We encode the commands to Base64 to safely pass them over SSH without parsing/quote issues
+$Bytes = [System.Text.Encoding]::Unicode.GetBytes($RemoteCommands)
+$EncodedCommand = [Convert]::ToBase64String($Bytes)
+& $SSH "$RemoteUser@$RemoteIP" -p 8181 "powershell -EncodedCommand $EncodedCommand"
 Write-Host "Done!" -ForegroundColor Green

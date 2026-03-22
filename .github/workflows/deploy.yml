@@ -108,8 +108,9 @@ jobs:
             pip install -r requirements.txt
 
             echo === Starting portfolio-backend ===
+            powershell -Command "Stop-Process -Name python -Force -ErrorAction SilentlyContinue 2>$null"
             pm2 delete portfolio-backend 2>$null
-            pm2 start start_server.py --name portfolio-backend --interpreter python
+            pm2 start main.py --name portfolio-backend --interpreter python
             pm2 save
 
             echo === Health Check ===
