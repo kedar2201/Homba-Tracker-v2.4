@@ -12,7 +12,14 @@ def setup_logging():
     # In production, logging exceptions should never take down the process.
     logging.raiseExceptions = settings.ENVIRONMENT != "production"
 
-    handlers = [logging.FileHandler(os.path.join(log_dir, "app.log"), encoding="utf-8")]
+    # Fallback logging if file writing fails (common in production/Windows locks)
+    try:
+        file_handler = logging.FileHandler(os.path.join(log_dir, "app.log"), encoding="utf-8")
+        handlers = [file_handler]
+    except Exception as e:
+        print(f"WARNING: Could not initialize file logging: {e}")
+        handlers = []
+
     if getattr(sys.stdout, "closed", False) is False:
         handlers.insert(0, logging.StreamHandler(sys.stdout))
 

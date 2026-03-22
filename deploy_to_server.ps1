@@ -46,8 +46,8 @@ if (Test-Path 'backend_old') { Remove-Item 'backend_old' -Recurse -Force }
 Move-Item 'backend' 'backend_old' -Force
 New-Item -ItemType Directory -Path 'backend' -Force
 
-Write-Host '--- 🛑 Stopping Service: $PM2Name ---'
-pm2 stop $PM2Name
+Write-Host '--- 🛑 Stopping/Deleting Service: $PM2Name ---'
+pm2 delete $PM2Name 2>$null
 
 Write-Host '--- 📂 Extracting Packages ---'
 powershell -Command "Expand-Archive -Path backend_update.zip -DestinationPath backend -Force"
@@ -62,8 +62,8 @@ Write-Host '--- 🐍 Updating Dependencies ---'
 cd backend
 python -m pip install -r requirements.txt
 
-Write-Host '--- 🚀 Restarting Service: $PM2Name ---'
-pm2 start $PM2Name
+Write-Host '--- 🚀 Starting Service with Uvicorn via Script: $PM2Name ---'
+pm2 start start_server.py --name $PM2Name --interpreter python
 
 Write-Host '--- ✅ DEPLOYMENT FINISHED ---'
 "@

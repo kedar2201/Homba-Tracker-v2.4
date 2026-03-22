@@ -108,7 +108,9 @@ jobs:
             pip install -r requirements.txt
 
             echo === Starting portfolio-backend ===
-            pm2 start portfolio-backend
+            pm2 delete portfolio-backend 2>$null
+            pm2 start start_server.py --name portfolio-backend --interpreter python
+            pm2 save
 
             echo === Health Check ===
             powershell -Command "Start-Sleep -Seconds 5; try { $r = Invoke-WebRequest -Uri 'http://localhost:8001/health' -UseBasicParsing -TimeoutSec 10; Write-Host ('Health: ' + $r.Content) } catch { Write-Host ('WARNING: Health check failed - ' + $_.Exception.Message) }"
